@@ -144,19 +144,40 @@ The live command saves articles, per-dimension scores, rationales, failure count
 
 ## How the workflow works
 
-```mermaid
-flowchart LR
-    A[Mission] --> B[Model chooses next action]
-    B -->|tool call| C[Validate arguments and budgets]
-    C -->|read or generate| D[Execute tool]
-    C -->|WordPress or LinkedIn write| E[Checkpoint and review]
-    E -->|matching approval| D
-    E -->|rejection| F[Rejected]
-    D -->|article generated| J[LLM judge and score validation]
-    J --> B
-    D -->|other result| B
-    B -->|final answer| G[Completed or completed with errors]
-    C -->|budget exhausted| H[Budget exceeded]
+```text
+Mission
+   |
+   v
+Plan next action ---- final answer ----> Finish
+   |
+   v
+Validate tool arguments and budgets
+   |
+   +-- Audit / research / draft LinkedIn post --> Save result --> Plan
+   |
+   +-- Write article --> LLM judge --> Save assessment --> Plan
+   |
+   +-- WordPress / LinkedIn publish request
+                         |
+                         v
+              Check article assessment
+                         |
+                         v
+                  Save checkpoint
+                         |
+                         v
+                    Human review
+                         |
+              +----------+----------+
+              |                     |
+           Approve                Reject
+              |                     |
+    Publish / reuse receipt        Stop
+              |
+              +--> Save result --> Plan
+
+Exhausted budget --> Stop with "budget_exceeded"
+Finish --> "completed" or "completed_with_errors"
 ```
 
 `MissionState` retains messages, artifacts, pending actions, approval, cache, budgets, metrics and errors. Message and event reducers preserve the execution history. Pydantic validates tool inputs and structured model outputs. LangGraph controls state transitions and stores SQLite checkpoints.
