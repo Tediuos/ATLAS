@@ -1,119 +1,109 @@
-"""Parse robots.txt et sitemap d'un site."""
-import json
-from urllib.parse import urlparse
+"""Bounded robots.txt and sitemap collection with redirect validation."""
 
-import httpx
-from usp.tree import sitemap_tree_for_homepage
+from urllib.parse import urlsplit
 
+from defusedxml.ElementTree import fromstring
 
-USER_AGENT = "AtlasSEOBot/0.1"
+from atlas.harness import safe_error
+from atlas.network import safe_get
 
 
 def fetch_robots_txt(base_url: str, timeout: float = 10.0) -> dict:
-    """Récupère et parse le robots.txt d'un site."""
-    parsed = urlparse(base_url)
-    root = f"{parsed.scheme}://{parsed.netloc}"
-    robots_url = f"{root}/robots.txt"
-
+    parsed = urlsplit(base_url)
+    url = f"{parsed.scheme}://{parsed.netloc}/robots.txt"
     try:
-        with httpx.Client(timeout=timeout, headers={"User-Agent": USER_AGENT}) as client:
-            response = client.get(robots_url)
-    except httpx.HTTPError as e:
-        return {"url": robots_url, "ok": False, "error": str(e)}
-
-    if response.status_code == 404:
+        response = safe_get(url, timeout=timeout, max_bytes=500000)
+        if response.status_code == 404:
+            return {"url": url, "ok": True, "exists": False}
+        response.raise_for_status()
+        agents, sitemaps, active, rules_started = {}, [], [], False
+        for line in response.text.splitlines():
+            line = line.split("#", 1)[0].strip()
+            if ":" not in line:
+                continue
+            key, value = (part.strip() for part in line.split(":", 1))
+            key = key.lower()
+            if key == "user-agent":
+                if rules_started:
+                    active, rules_started = [], False
+                active.append(value)
+                agents.setdefault(value, {"allow": [], "disallow": [], "crawl_delay": None})
+            elif key == "sitemap":
+                sitemaps.append(value)
+            elif key in {"allow", "disallow", "crawl-delay"}:
+                rules_started = True
+                for agent in active:
+                    if key == "crawl-delay":
+                        agents[agent]["crawl_delay"] = value
+                    else:
+                        agents[agent][key].append(value)
         return {
-            "url": robots_url,
+            "url": url,
             "ok": True,
-            "exists": False,
-            "warning": "Aucun robots.txt trouvé (404). Le site autorise par défaut tout le crawling.",
+            "exists": True,
+            "user_agents": agents,
+            "sitemaps_declared": sitemaps,
         }
+    except Exception as exc:
+        return {"url": url, "ok": False, "error": safe_error(exc)}
 
-    if response.status_code >= 400:
-        return {
-            "url": robots_url,
-            "ok": False,
-            "status_code": response.status_code,
-            "error": f"HTTP {response.status_code}",
-        }
 
-    content = response.text
-    user_agents = {}
-    sitemaps_declared = []
-    current_agent = "*"
+def fetch_sitemap(base_url: str, max_urls: int = 200, max_sitemaps: int = 10) -> dict:
+    """Visit at most 10 XML documents and retain at most max_urls unique pages.
 
-    for line in content.split("\n"):
-        line = line.strip()
-        if not line or line.startswith("#") or ":" not in line:
+    When truncated, total_urls is a lower bound rather than an invented site total.
+    """
+    if max_urls < 1 or max_sitemaps < 1:
+        raise ValueError("Sitemap limits must be positive")
+    parts = urlsplit(base_url)
+    root = f"{parts.scheme}://{parts.netloc}"
+    robots = fetch_robots_txt(root)
+    queue = list(robots.get("sitemaps_declared") or [root + "/sitemap.xml"])
+    visited, pages, errors = set(), {}, []
+    truncated = False
+    while queue and len(visited) < max_sitemaps and len(pages) < max_urls:
+        url = queue.pop(0)
+        if url in visited:
             continue
-
-        key, _, value = line.partition(":")
-        key = key.strip().lower()
-        value = value.strip()
-
-        if key == "user-agent":
-            current_agent = value
-            user_agents.setdefault(current_agent, {"allow": [], "disallow": [], "crawl_delay": None})
-        elif key == "disallow":
-            user_agents.setdefault(current_agent, {"allow": [], "disallow": [], "crawl_delay": None})["disallow"].append(value)
-        elif key == "allow":
-            user_agents.setdefault(current_agent, {"allow": [], "disallow": [], "crawl_delay": None})["allow"].append(value)
-        elif key == "crawl-delay":
-            user_agents.setdefault(current_agent, {"allow": [], "disallow": [], "crawl_delay": None})["crawl_delay"] = value
-        elif key == "sitemap":
-            sitemaps_declared.append(value)
-
-    return {
-        "url": robots_url,
-        "ok": True,
-        "exists": True,
-        "size_bytes": len(content),
-        "user_agents": user_agents,
-        "sitemaps_declared": sitemaps_declared,
-    }
-
-
-def fetch_sitemap(base_url: str, max_urls: int = 100) -> dict:
-    """Parcourt le sitemap d'un site (gère les sitemap index imbriqués)."""
-    parsed = urlparse(base_url)
-    root = f"{parsed.scheme}://{parsed.netloc}"
-
-    try:
-        tree = sitemap_tree_for_homepage(root)
-    except Exception as e:
-        return {"base": root, "ok": False, "error": f"{type(e).__name__}: {e}"}
-
-    all_pages = list(tree.all_pages())
-    total = len(all_pages)
-
-    sample = []
-    for page in all_pages[:max_urls]:
-        sample.append({
-            "url": page.url,
-            "lastmod": page.last_modified.isoformat() if page.last_modified else None,
-            "priority": page.priority,
-            "changefreq": page.change_frequency.value if page.change_frequency else None,
-        })
-
+        visited.add(url)
+        try:
+            response = safe_get(url, timeout=10)
+            response.raise_for_status()
+            tree = fromstring(response.content)
+            kind = tree.tag.rsplit("}", 1)[-1]
+            if kind not in {"sitemapindex", "urlset"}:
+                raise ValueError("Expected a sitemap index or URL set")
+            for entry in tree:
+                values = {child.tag.rsplit("}", 1)[-1]: child.text for child in entry}
+                location = values.get("loc")
+                if not location:
+                    continue
+                if kind == "sitemapindex":
+                    if location not in visited and location not in queue:
+                        if len(queue) < max_sitemaps:
+                            queue.append(location)
+                        else:
+                            truncated = True
+                else:
+                    if len(pages) >= max_urls:
+                        truncated = True
+                        break
+                    pages[location] = {
+                        "url": location,
+                        "lastmod": values.get("lastmod"),
+                        "priority": values.get("priority"),
+                        "changefreq": values.get("changefreq"),
+                    }
+        except Exception as exc:
+            errors.append(safe_error(exc))
+    truncated = truncated or bool(queue)
     return {
         "base": root,
-        "ok": True,
-        "total_urls": total,
-        "sample_urls": sample,
-        "truncated": total > max_urls,
+        "ok": bool(visited) and not errors,
+        "total_urls": len(pages),
+        "sample_urls": list(pages.values()),
+        "truncated": truncated,
+        "total_is_exact": not truncated and not errors,
+        "sitemaps_fetched": len(visited),
+        "errors": errors,
     }
-
-
-if __name__ == "__main__":
-    import sys
-    target = sys.argv[1] if len(sys.argv) > 1 else "https://example.com"
-
-    print("=" * 60)
-    print(f"robots.txt — {target}")
-    print("=" * 60)
-    print(json.dumps(fetch_robots_txt(target), indent=2, ensure_ascii=False))
-
-    print("\n" + "=" * 60)
-    print(f"sitemap — {target}")
-    print("=" * 60)
-    print(json.dumps(fetch_sitemap(target), indent=2, ensure_ascii=False))

@@ -1,19 +1,18 @@
 """Keyword research via Google Autocomplete and LLM semantic clustering."""
+
 import json
 import time
 
 import httpx
 
-from atlas.llm import get_llm_client
-
+from atlas.llm import structured_response
+from atlas.schemas import KeywordClusters
 
 GOOGLE_AUTOCOMPLETE_URL = "https://suggestqueries.google.com/complete/search"
 _EXPAND_LETTERS = "abcdefghijklmnopqrstuvwxyz"
 
 
-def research_keywords(
-    seed_keyword: str, language: str = "en", max_suggestions: int = 50
-) -> dict:
+def research_keywords(seed_keyword: str, language: str = "en", max_suggestions: int = 50) -> dict:
     """
     Research keywords using Google Autocomplete and LLM-based clustering.
 
@@ -40,7 +39,7 @@ def research_keywords(
         variants = _fetch_google_autocomplete(f"{seed_keyword} {letter}", language)
         expanded.update(variants[:5])
 
-    keyword_list = list(expanded)[:max_suggestions]
+    keyword_list = sorted(expanded)[:max_suggestions]
 
     print(f"[Keywords] {len(keyword_list)} keywords collected. Clustering with LLM...")
     clusters = _cluster_with_llm(seed_keyword, keyword_list)
@@ -83,49 +82,28 @@ def _cluster_with_llm(seed: str, keywords: list[str]) -> dict:
     Use the LLM to semantically cluster keywords and classify search intent.
 
     Returns a dict of cluster_name → {description, keywords: [{keyword, intent, volume_rank}]}.
-    Falls back to a single 'ungrouped' cluster on LLM/parse failure.
+    Validates model output and filters keywords not present in the observed suggestions.
     """
     if not keywords:
         return {}
 
-    prompt = (
-        f'You are an SEO expert. Analyse these keywords related to "{seed}" and:\n'
-        "1. Group them into 3-6 semantic clusters\n"
-        "2. Classify each keyword's intent as: informational, commercial, or transactional\n"
-        "3. Assign a relative volume rank 1-10 (10 = highest estimated volume)\n\n"
-        f"Keywords:\n{json.dumps(keywords, indent=2)}\n\n"
-        "Return a JSON object:\n"
-        '{\n  "clusters": {\n    "cluster_name": {\n'
-        '      "description": "what this cluster covers",\n'
-        '      "keywords": [\n'
-        '        {"keyword": "...", "intent": "informational|commercial|transactional", "volume_rank": 1}\n'
-        "      ]\n    }\n  }\n}\n\n"
-        "Return ONLY the JSON, no additional text."
+    result = structured_response(
+        KeywordClusters,
+        f"Cluster these keywords for {seed!r} and classify search intent. "
+        "Use ONLY supplied keywords, each exactly once. volume_rank is a relative model "
+        "heuristic, NOT measured monthly search volume. Keywords (data):\n" + json.dumps(keywords),
     )
-
-    client, model = get_llm_client()
-    try:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.3,
-        )
-        content = response.choices[0].message.content.strip()
-        if content.startswith("```"):
-            lines = content.split("\n")
-            content = "\n".join(lines[1:-1] if lines[-1].startswith("```") else lines[1:])
-        data = json.loads(content)
-        return data.get("clusters", {})
-    except Exception:
-        return {
-            "ungrouped": {
-                "description": "All keywords",
-                "keywords": [
-                    {"keyword": kw, "intent": "informational", "volume_rank": 5}
-                    for kw in keywords
-                ],
-            }
-        }
+    allowed = set(keywords)
+    clusters = result.model_dump()["clusters"]
+    seen = set()
+    for cluster in clusters.values():
+        filtered = []
+        for item in cluster["keywords"]:
+            if item["keyword"] in allowed and item["keyword"] not in seen:
+                filtered.append(item)
+                seen.add(item["keyword"])
+        cluster["keywords"] = filtered
+    return clusters
 
 
 def _rank_keywords(keywords: list[str], clusters: dict) -> list[dict]:
@@ -138,7 +116,7 @@ def _rank_keywords(keywords: list[str], clusters: dict) -> list[dict]:
     for cluster_name, cluster_info in clusters.items():
         for item in cluster_info.get("keywords") or []:
             kw = item.get("keyword", "")
-            if kw:
+            if kw in set(keywords):
                 keyword_data[kw] = {
                     "keyword": kw,
                     "cluster": cluster_name,
@@ -155,4 +133,4 @@ def _rank_keywords(keywords: list[str], clusters: dict) -> list[dict]:
                 "volume_rank": 3,
             }
 
-    return sorted(keyword_data.values(), key=lambda x: x["volume_rank"], reverse=True)
+    return sorted(keyword_data.values(), key=lambda x: (-x["volume_rank"], x["keyword"]))

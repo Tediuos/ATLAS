@@ -1,0 +1,50 @@
+{
+  "mode": "scripted_protocol",
+  "rubric_version": "atlas-article-v1",
+  "cases": 10,
+  "passed": 10,
+  "results": [
+    {
+      "name": "aggregate_score_1",
+      "passed": true
+    },
+    {
+      "name": "aggregate_score_2",
+      "passed": true
+    },
+    {
+      "name": "aggregate_score_3",
+      "passed": true
+    },
+    {
+      "name": "aggregate_score_4",
+      "passed": true
+    },
+    {
+      "name": "aggregate_score_5",
+      "passed": true
+    },
+    {
+      "name": "reject_invalid_score_0",
+      "passed": true
+    },
+    {
+      "name": "reject_invalid_score_6",
+      "passed": true
+    },
+    {
+      "name": "reject_invalid_score_'5'",
+      "passed": true
+    },
+    {
+      "name": "reject_invalid_score_True",
+      "passed": true
+    },
+    {
+      "name": "reject_overrides_high_scores",
+      "passed": true
+    }
+  ],
+  "live_articles_scored": 0,
+  "limitation": "Tests validation, arithmetic and gating with synthetic responses; not LLM judging quality."
+}

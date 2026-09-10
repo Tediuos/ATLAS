@@ -1,8 +1,10 @@
 """Orchestrates all SEO data-collection tools and produces a prioritised audit report."""
+
 import json
 from typing import Optional
 
-from atlas.llm import get_llm_client
+from atlas.llm import structured_response
+from atlas.schemas import AuditAnalysis
 from atlas.tools.crawler import crawl_url
 from atlas.tools.lighthouse import run_lighthouse
 from atlas.tools.robots_sitemap import fetch_robots_txt, fetch_sitemap
@@ -51,13 +53,16 @@ def run_audit(url: str, mission_id: Optional[int] = None) -> dict:
     }
 
 
-def _compute_overall_score(crawl_data: dict, lighthouse_data: dict) -> float:
+def _compute_overall_score(crawl_data: dict, lighthouse_data: dict) -> float | None:
     """
     Compute a 0-100 overall SEO score from crawl and Lighthouse data.
 
     Averages the Lighthouse SEO + performance scores with an on-page
     heuristic score derived from title, description, H1, and image alt text.
     """
+    if not crawl_data.get("ok", True):
+        return None
+
     scores: list[float] = []
 
     if lighthouse_data.get("ok"):
@@ -98,7 +103,7 @@ def _analyse_with_llm(
     Call the LLM to identify and rank the top 10 SEO issues.
 
     Builds a compact summary of audit data to keep prompt size manageable,
-    then parses the LLM JSON response into a list of issue dicts.
+    then validates the structured response against the audit issue schema.
     """
     summary = {
         "url": url,
@@ -118,40 +123,12 @@ def _analyse_with_llm(
         "open_graph": crawl_data.get("open_graph"),
     }
 
-    prompt = (
-        "You are an SEO expert. Analyse this website audit data and identify the TOP 10 "
-        "most impactful SEO issues.\n\n"
-        f"Audit data:\n{json.dumps(summary, indent=2, default=str)}\n\n"
-        "Return a JSON array of exactly 10 objects with these fields:\n"
-        "- priority: integer 1-10 (1 = most critical)\n"
-        "- category: one of [technical, on-page, content, performance, structured-data, mobile]\n"
-        "- issue: short description of the problem\n"
-        "- impact: why this matters for SEO\n"
-        "- recommendation: specific action to fix it\n"
-        "- effort: one of [low, medium, high]\n\n"
-        "Return ONLY the JSON array, no additional text."
-    )
-
-    client, model = get_llm_client()
-    try:
-        response = client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.2,
-        )
-        content = response.choices[0].message.content.strip()
-        if content.startswith("```"):
-            lines = content.split("\n")
-            content = "\n".join(lines[1:-1] if lines[-1].startswith("```") else lines[1:])
-        return json.loads(content)
-    except Exception as exc:
-        return [
-            {
-                "priority": 1,
-                "category": "error",
-                "issue": f"LLM analysis failed: {exc}",
-                "impact": "Unable to prioritise issues automatically.",
-                "recommendation": "Check LLM configuration and retry.",
-                "effort": "low",
-            }
-        ]
+    return [
+        issue.model_dump()
+        for issue in structured_response(
+            AuditAnalysis,
+            "Identify up to 10 evidence-supported SEO issues in this audit. Do not invent issues "
+            "to fill a quota. Rank by impact and give actionable recommendations. Audit data:\n"
+            + json.dumps(summary, default=str),
+        ).issues
+    ]

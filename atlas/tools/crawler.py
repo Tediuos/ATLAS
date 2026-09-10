@@ -1,11 +1,13 @@
 """Crawl une URL et extrait toutes les données SEO on-page."""
-import time
+
 import json
+import time
 from urllib.parse import urljoin, urlparse
 
 import httpx
 from selectolax.parser import HTMLParser
 
+from atlas.network import safe_get
 
 USER_AGENT = "AtlasSEOBot/0.1 (Internship Project; Python httpx)"
 
@@ -16,13 +18,8 @@ def crawl_url(url: str, timeout: float = 15.0) -> dict:
 
     # 1. Récupération de la page
     try:
-        with httpx.Client(
-            timeout=timeout,
-            follow_redirects=True,
-            headers={"User-Agent": USER_AGENT},
-        ) as client:
-            response = client.get(url)
-    except httpx.HTTPError as e:
+        response = safe_get(url, timeout=timeout)
+    except (httpx.HTTPError, ValueError, OSError) as e:
         return {"url": url, "ok": False, "error": str(e)}
 
     elapsed = round(time.time() - start, 3)
@@ -65,6 +62,7 @@ def crawl_url(url: str, timeout: float = 15.0) -> dict:
 
 # ============ EXTRACTEURS INTERNES ============
 
+
 def _extract_language(parser):
     html_tag = parser.css_first("html")
     return html_tag.attributes.get("lang") if html_tag else None
@@ -79,8 +77,13 @@ def _extract_title(parser):
 
 
 def _extract_meta_tags(parser):
-    meta = {"description": None, "keywords": None, "robots": None,
-            "canonical": None, "hreflang": []}
+    meta = {
+        "description": None,
+        "keywords": None,
+        "robots": None,
+        "canonical": None,
+        "hreflang": [],
+    }
 
     for tag in parser.css("meta"):
         name = (tag.attributes.get("name") or "").lower()
@@ -97,10 +100,12 @@ def _extract_meta_tags(parser):
         meta["canonical"] = canonical.attributes.get("href")
 
     for link in parser.css('link[rel="alternate"][hreflang]'):
-        meta["hreflang"].append({
-            "lang": link.attributes.get("hreflang"),
-            "url": link.attributes.get("href"),
-        })
+        meta["hreflang"].append(
+            {
+                "lang": link.attributes.get("hreflang"),
+                "url": link.attributes.get("href"),
+            }
+        )
 
     return meta
 
@@ -138,8 +143,11 @@ def _extract_links(parser, base_url):
     return {
         "internal": internal,
         "external": external,
-        "counts": {"internal": len(internal), "external": len(external),
-                   "total": len(internal) + len(external)},
+        "counts": {
+            "internal": len(internal),
+            "external": len(external),
+            "total": len(internal) + len(external),
+        },
     }
 
 
@@ -150,13 +158,15 @@ def _extract_images(parser, base_url):
         if not src:
             continue
         alt = img.attributes.get("alt", "") or ""
-        images.append({
-            "src": urljoin(base_url, src),
-            "alt": alt,
-            "has_alt": alt.strip() != "",
-            "width": img.attributes.get("width"),
-            "height": img.attributes.get("height"),
-        })
+        images.append(
+            {
+                "src": urljoin(base_url, src),
+                "alt": alt,
+                "has_alt": alt.strip() != "",
+                "width": img.attributes.get("width"),
+                "height": img.attributes.get("height"),
+            }
+        )
     return {
         "list": images,
         "total": len(images),
@@ -197,6 +207,7 @@ def _extract_json_ld(parser):
 
 if __name__ == "__main__":
     import sys
+
     target = sys.argv[1] if len(sys.argv) > 1 else "https://example.com"
     print(f"Crawling: {target}\n")
     result = crawl_url(target)

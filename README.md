@@ -1,283 +1,215 @@
-# Atlas — Agent IA Autonome pour SEO & WordPress
+# ATLAS — Agentic SEO, Content and Social Publishing
 
-> Agent IA qui audite la santé SEO d'un site web, fait de la recherche de mots-clés, génère des articles optimisés et les publie sur WordPress. **100% open source, zéro API payante.**
+ATLAS turns a natural-language mission into a stateful workflow: audit a website, research keywords, write and evaluate an article, then prepare reviewed WordPress or LinkedIn posts. **LangChain** provides model and tool interfaces; **LangGraph** manages execution, checkpoints, LLM judging and human review.
 
-Projet de stage — May 2026.
+Built by Mohamed Yassine Aouidet.
 
----
+## What it does
 
-## Vue d'ensemble
+- **SEO auditing:** on-page HTML extraction, Lighthouse lab metrics, robots.txt and bounded sitemap discovery, followed by validated issue prioritization.
+- **Keyword research:** autocomplete suggestions, intent classification, and semantic clusters. Rankings are model heuristics, not measured search volumes.
+- **Article generation:** validated outline, HTML draft, sanitation, eight deterministic editorial checks, and one bounded revision attempt.
+- **LLM-as-judge evaluation:** a separate Groq evaluator scores each generated article across five rubric dimensions, with validated reasons, a code-computed score out of 100 and an article-specific publication gate.
+- **LinkedIn drafting:** turn supplied facts or a generated article into a concise text post. Drafts stay local until approved.
+- **Reviewed publishing:** inspect the exact destination, content and visibility before any WordPress or LinkedIn write. Tokens and passwords stay out of the review payload.
+- **Persistent execution:** reopen a paused mission using its ID, review it, and resume from the saved checkpoint.
+- **Observable execution:** model calls, reported tokens, retries, tool latency, cache hits, errors and terminal status are returned with each mission.
 
-Atlas est un agent IA qui orchestre plusieurs outils SEO via un LLM (Llama 3.3 70B sur Groq ou Qwen 2.5 en local via Ollama). On lui donne une mission en langage naturel — *"audite ce site, identifie un sujet d'article qui correspond à une lacune, génère-le et publie-le"* — et il choisit lui-même quels outils utiliser et dans quel ordre.
+## Measured results
 
-### Démo en une commande
+These are **local offline reliability measurements**, using scripted model responses and fixture services. They do not establish live LLM accuracy, article quality, SEO gains or production latency.
 
-```bash
-python -m atlas.agent "Audite http://exemple.com, identifie un sujet d'article qui correspond à une lacune, génère-le et publie-le en draft sur WordPress."
-```
+| Measurement | Result | Evidence |
+|---|---:|---|
+| Automated tests | 117 passed | [Repository validation](evaluation/results/VALIDATION.md) |
+| Statement + branch coverage | 82.37% | [Per-module coverage](evaluation/results/validation.json) |
+| Workflow benchmark | 170/170 runs; 34 distinct scenarios × 5 repeats | [Results and methodology](evaluation/results/RESULTS.md) |
+| Selected before/after regression probes | 1/7 → 7/7 | [Original-commit comparison](evaluation/results/BASELINE.md) |
+| Repeated identical audit requests | 2 → 1 tool execution | [Caching probe](evaluation/results/baseline.json) |
+| Judge harness checks | 10/10 synthetic protocol checks | [Judge protocol evaluation](evaluation/results/JUDGE_PROTOCOL.md) |
+| Live article judge scores | Not yet measured | [Live evaluation status](evaluation/results/JUDGE_LIVE.md) |
 
-L'agent enchaîne :
-1. **Audit SEO complet** : crawl HTML + Lighthouse + robots.txt + sitemap + priorisation LLM des issues
-2. **Keyword research** : Google autocomplete + clustering sémantique par LLM
-3. **Génération d'article** : prompt chaining (plan → sections → assemblage HTML + FAQ JSON-LD)
-4. **Publication** : WordPress REST API avec auth Application Password
+The benchmark includes audit/research/writing, LinkedIn drafting and reviewed publishing, judge rejection/failure, invalid inputs, duplicate reads, budgets and recovery. The test suite also verifies checkpoint reopening, uncertain writes, HTTP controls, HTML sanitation, the LinkedIn API contract and Streamlit review rendering. Scripted judge responses are never presented as live article-quality measurements.
 
-Tout est restitué en français business, prêt à être livré à un client.
+## Quick start
 
----
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────┐
-│      AGENT BRAIN (Llama 3.3 + tool use)         │
-│  Reçoit objectif → planifie → exécute → résume  │
-└──────────┬──────────────────────────────────────┘
-           │
-           ▼
-┌──────────────────────────────────────────────────┐
-│                  OUTILS                          │
-│                                                  │
-│  audit_site()                keyword_research()  │
-│  generate_and_publish_article()                  │
-│                                                  │
-│  En interne : crawl_url, run_lighthouse,         │
-│  fetch_robots, fetch_sitemap, generate_article,  │
-│  publish_article, generate_seo_report            │
-└──────────────────────────────────────────────────┘
-           │
-           ▼
-┌──────────────────────────────────────────────────┐
-│  STOCKAGE  →  SQLite (audits historiques)        │
-│  UI        →  Streamlit (dashboard, formulaires) │
-│  RAPPORT   →  HTML pro via Jinja2 (PDF optionnel)│
-└──────────────────────────────────────────────────┘
-```
-
----
-
-## Stack technique (100% open source)
-
-| Composant | Choix | Pourquoi |
-|---|---|---|
-| LLM (cloud free tier) | Groq + Llama 3.3 70B | API OpenAI-compatible, free tier généreux, modèle ouvert (Meta) |
-| LLM (local, fallback) | Ollama + Qwen 2.5 / Mistral | 100% offline, aucune dépendance externe |
-| Framework agent | Direct API + boucle tool calling maison | Pas de LangChain : compréhension profonde du pattern agent |
-| Crawl HTML | `httpx` + `selectolax` | Parser HTML 10x plus rapide que BeautifulSoup |
-| Audit performance | Lighthouse CLI (Google, OSS) | Référence du marché, données identiques à PageSpeed Insights |
-| Sitemap | `ultimate-sitemap-parser` | Gère les sitemap index imbriqués |
-| Keyword research | Google autocomplete + clustering LLM | Zéro API payante, intent classification par LLM |
-| Templates | `jinja2` | Standard Python pour HTML templating |
-| PDF (optionnel) | WeasyPrint, ou Chrome print-to-pdf | Le HTML reste autonome et imprimable |
-| Storage | SQLite + SQLAlchemy 2.x | Zéro setup, parfait pour ce scope |
-| UI | Streamlit | Prototype d'interface web en quelques heures |
-| HTTP | `httpx` | Successeur moderne de requests, supporte async natif |
-
-**Aucune des dépendances n'est payante** et **aucune n'est propriétaire** (au sens "closed source SaaS").
-
----
-
-## Fonctionnalités principales
-
-### Audit SEO complet
-
-- Crawl HTML : titre, meta, h1-h6, liens internes/externes, images, JSON-LD, Open Graph, Twitter Cards
-- Audit performance Lighthouse : Core Web Vitals (LCP, CLS, INP), scores Performance/SEO/A11y/BP, opportunités d'optimisation
-- robots.txt : présence, user-agents, sitemaps déclarés, crawl-delay
-- Sitemap : nombre d'URLs, sample, dates de modification
-- Priorisation par LLM : 10 issues max classées critique / important / nice_to_have, avec impact business + action concrète
-
-### Génération d'articles SEO
-
-- Prompt chaining (qualité supérieure à un seul gros prompt)
-- 1200-1800 mots, 5-7 sections H2, FAQ JSON-LD schema.org
-- Meta title (50-60 chars), meta description (150-160 chars), slug URL
-- Intégration naturelle du mot-clé cible + secondaires
-
-### Publication WordPress
-
-- WP REST API native (depuis WP 4.7, pas de plugin requis)
-- Auth Application Password (Basic Auth)
-- Catégories + tags auto-créés si absents
-- Status draft / publish / scheduled
-
-### Rapport SEO HTML
-
-- Page de couverture
-- Grille de 4 scores colorés
-- Plan d'action priorisé (rouge / orange / vert)
-- Détails techniques + Lighthouse + indexabilité
-- Convertible en PDF via Chrome (Ctrl+P) ou WeasyPrint
-
-### UI Streamlit
-
-- Tableau de bord avec historique des audits
-- Formulaires : nouvel audit, génération d'article
-- Page "Agent libre" pour parler à l'agent en langage naturel
-- Téléchargement des rapports HTML
-
----
-
-## Setup
-
-### Prérequis
-
-- Python 3.11+
-- Node.js (pour Lighthouse CLI)
-- Chrome installé
-- (Optionnel) Ollama si tu veux du LLM local
-
-### Installation
+Python **3.11+** is required. Python **3.12** is the recorded local validation environment. Start with the offline evaluation; it needs no model key, WordPress account, Chrome or paid service.
 
 ```bash
-# Cloner
-git clone https://github.com/Tediuos/atlas-wordpress-agent.git
-cd atlas-wordpress-agent
-
-# Virtual env
+git clone https://github.com/Tediuos/ATLAS.git
+cd ATLAS
 python -m venv .venv
-source .venv/bin/activate   # Linux/Mac
-.\.venv\Scripts\Activate.ps1  # Windows
-
-# Dépendances Python
-pip install -r requirements.txt
-
-# Lighthouse CLI
-npm install -g lighthouse
-
-# Variables d'environnement
-cp .env.example .env
-# Édite .env avec ta clé Groq + tes credentials WordPress
+# Linux / macOS
+source .venv/bin/activate
+# Windows PowerShell: .\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements-dev.txt
+python -m atlas.evaluation.runner --repetitions 5
+python -m pytest
 ```
 
-### Configuration
+`requirements-lock.txt` records the complete validated Python 3.12 environment. Install it instead of `requirements-dev.txt` to reproduce those package versions. Normal dependency ranges and CI also cover Python 3.11.
 
-Édite `.env` :
+### Configure live tools
 
-```env
+Copy `.env.example` to `.env` (`Copy-Item .env.example .env` in PowerShell) and choose a provider:
+
+```dotenv
 LLM_PROVIDER=groq
-GROQ_API_KEY=gsk_...
+GROQ_API_KEY=your-key
 GROQ_MODEL=llama-3.3-70b-versatile
+```
 
+Or use an Ollama model that supports tool calling and structured output:
+
+```dotenv
+LLM_PROVIDER=ollama
 OLLAMA_MODEL=qwen2.5:7b
-
-WP_URL=http://ton-site.local
-WP_USER=admin
-WP_APP_PASSWORD=xxxx xxxx xxxx xxxx xxxx xxxx
+OLLAMA_BASE_URL=http://localhost:11434/v1
+JUDGE_PROVIDER=ollama
+JUDGE_MODEL=qwen2.5:7b
 ```
 
-Récupère ta clé Groq sur https://console.groq.com/keys (gratuit).
+Model availability, hosting costs and provider rate limits depend on your setup. Groq is a hosted service; Ollama requires local model resources. The offline benchmark does not verify either provider's current model behavior.
 
----
-
-## Utilisation
-
-### Mode CLI
+For Lighthouse, install Node.js, Chrome and the CLI:
 
 ```bash
-# Audit standalone
-python -m atlas.tools.auditor http://exemple.com
-
-# Keyword research
-python -m atlas.tools.keywords "wordpress seo" fr
-
-# Génération + publication
-python -m atlas.tools.wordpress "Sujet de l'article" "mot-cle cible"
-
-# Rapport SEO depuis le dernier audit
-python -m atlas.tools.seo_report
-
-# Agent autonome (mission en langage naturel)
-python -m atlas.agent "Audite http://exemple.com et donne-moi les 3 actions prioritaires."
+npm install -g lighthouse
 ```
 
-### Mode UI web
+Without Lighthouse, the audit can still use HTML data and reports the missing performance measurement. Its overall score is an ATLAS heuristic, not a Google ranking prediction. Lighthouse reports lab metrics such as LCP, CLS and TBT; it does not measure field INP here.
+
+### Run a mission
 
 ```bash
-streamlit run ui/streamlit_app.py
+python -m atlas.agent "Audit https://example.com and explain the highest-priority SEO issues."
+streamlit run ui/streamlit_app.py --server.address localhost
 ```
 
-L'app s'ouvre sur http://localhost:8501.
+The UI shows mission status, artifacts, execution metrics, and WordPress review controls. Use **Reopen a saved mission** after restarting the app.
 
----
+### Review a WordPress write
 
-## Structure du projet
+Set `WP_URL`, `WP_USER`, and `WP_APP_PASSWORD` in `.env`. Use a WordPress Application Password and HTTPS for remote sites.
 
-```
-atlas-wordpress-agent/
-├── atlas/
-│   ├── llm.py              # Wrapper Groq/Ollama
-│   ├── db.py               # Modèles SQLAlchemy
-│   ├── agent.py            # Boucle agent + tools
-│   ├── tools/
-│   │   ├── crawler.py
-│   │   ├── lighthouse.py
-│   │   ├── robots_sitemap.py
-│   │   ├── auditor.py
-│   │   ├── keywords.py
-│   │   ├── article_writer.py
-│   │   ├── wordpress.py
-│   │   └── seo_report.py
-│   └── templates/
-│       └── seo_report.html.j2
-├── ui/
-│   └── streamlit_app.py
-├── data/                   # SQLite + rapports (gitignored)
-├── requirements.txt
-├── .env.example
-└── README.md
+```bash
+python -m atlas.agent "Research wordpress seo, write an article, and send it to WordPress as a draft."
+python -m atlas.agent --inspect 1
+python -m atlas.agent --resume 1 --approve-hash HASH_FROM_REVIEW
+# To decline instead:
+python -m atlas.agent --resume 1 --reject-hash HASH_FROM_REVIEW
 ```
 
----
+Replace `1` with the returned mission ID. Inspect the full payload before copying its hash. Approval is tied to that exact payload. An ambiguous write failure stops execution and requires checking WordPress before another attempt; POST requests are never automatically retried. A durable journal reuses an existing receipt for an identical approved payload within the same mission.
 
-## Choix techniques notables
+The generated description is stored as the native WordPress excerpt. Mapping it to a Yoast/RankMath SEO field requires a site-specific integration. FAQ JSON-LD is retained as an export artifact; publishing sends the sanitized article HTML. No category/tag creation or scheduled-post support is claimed.
 
-### Pourquoi pas LangChain ?
+### Draft and post to LinkedIn
 
-Pour ce stage, on voulait **comprendre le pattern agent en profondeur** plutôt que cacher la complexité derrière une lib. La boucle agent (`atlas/agent.py`) fait 80 lignes et permet de tout maîtriser : sérialisation des outils, gestion d'erreurs, troncature de contexte. Atlas est facilement portable vers n'importe quel autre LLM OpenAI-compatible.
+Configure an access token, the authenticated member/organization URN and a supported API version in `.env`:
 
-### Pourquoi Groq plutôt qu'OpenAI / Anthropic ?
+```dotenv
+LINKEDIN_ACCESS_TOKEN=your-token
+LINKEDIN_AUTHOR_URN=urn:li:person:your-member-id
+LINKEDIN_API_VERSION=202606
+```
 
-Trois raisons : (1) **free tier généreux** , (2) **modèles open source** (Llama 3.3 70B, Qwen 2.5), donc reproductibilité parfaite, (3) **bascule triviale vers Ollama local** via une variable d'env, pour une démo offline.
+```bash
+python -m atlas.agent "Draft a LinkedIn post about the benefits of typed agent state and publish it after review."
+```
 
-### Pourquoi pas d'API SEO payante (Ahrefs / SEMrush / DataForSEO) ?
+The agent drafts the text, then pauses to show the author, full commentary and public visibility. Approve through Streamlit or the same CLI inspect/resume commands. LinkedIn posts become public after approval; there is no remote draft mode. API access requires the appropriate LinkedIn product and permissions. This implementation uses the versioned [LinkedIn Posts API](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api?view=li-lms-2026-06), with `w_member_social` for member publishing or approved organization access.
 
-Contrainte du projet : zéro budget. Stratégie de contournement : Google autocomplete (gratuit) pour collecter 100-200 mots-clés, LLM pour le clustering sémantique et la classification d'intent. On n'a pas les volumes exacts, mais on a la **structure thématique** et l'**intent** — suffisant pour orienter une stratégie de contenu.
+LinkedIn writes use one POST attempt and the same durable receipt journal as WordPress. Failed or ambiguous responses require reconciliation. This version publishes text posts only; image uploads, scheduling, token refresh and OAuth onboarding are outside its scope.
 
-### Pourquoi prompt chaining pour les articles ?
+### Evaluate articles with an LLM judge
 
-Un seul gros prompt "écris-moi un article complet sur X" produit du contenu plat et générique. En faisant 2 passes (plan global → puis chaque section avec son brief), on obtient des articles structurés et plus longs sans tomber dans la répétition.
+Every generated article goes through the `judge` node before the agent's next planning step. Configure the evaluator independently:
 
----
+```dotenv
+JUDGE_PROVIDER=groq
+JUDGE_MODEL=llama-3.3-70b-versatile
+```
 
-## Limitations connues
+The rubric covers **relevance, clarity, structure, SEO and factual support**, each scored 1–5 with a rationale. Code computes `sum(scores) / 25 × 100`. Publication requires a current assessment of that exact article, a score of at least 70, no dimension below 3, and an `accept` recommendation. Missing or invalid assessments block publication. Without supporting evidence, factual support is capped at 3 and the review explicitly flags fact checking.
 
-- **Pas de volume mensuel de recherche** (nécessiterait Ahrefs / SEMrush / DataForSEO payants).
-- **Pas de génération d'image featured automatique** (peut être ajouté via Stable Diffusion local ou Unsplash API).
-- **Single-site WordPress** (Wix, Shopify, PrestaShop, HubSpot sont des chantiers v2).
-- **Pas de support multi-utilisateurs / auth dans l'UI** (Streamlit en local-only).
-- **Lighthouse local lent** (~30-60s par audit). Acceptable mais bloque l'UI pendant ce temps.
+```bash
+# Offline validation of score parsing, aggregation and gates
+python -m atlas.evaluation.judge_run
+# Real article generation and Groq judging; consumes provider quota
+python -m atlas.evaluation.judge_run --live --samples 3 --repetitions 2
+```
 
----
+The live command saves articles, per-dimension scores, rationales, failure counts, token usage and repeat-score variation in `evaluation/results/judge_live.json`. These are model opinions, not validated factual truth or SEO impact. See [the judge rubric and limitations](docs/llm-judge.md).
 
-## Roadmap v2
+## How the workflow works
 
-- Multi-CMS (Wix, Shopify, PrestaShop, HubSpot)
-- Génération d'image featured via SD local
-- Scheduling périodique avec APScheduler + envoi email du rapport
-- Comparaison d'audits dans le temps (graph d'évolution des scores)
-- Auth multi-tenant pour SaaS-iser
+```mermaid
+flowchart LR
+    A[Mission] --> B[Model chooses next action]
+    B -->|tool call| C[Validate arguments and budgets]
+    C -->|read or generate| D[Execute tool]
+    C -->|WordPress or LinkedIn write| E[Checkpoint and review]
+    E -->|matching approval| D
+    E -->|rejection| F[Rejected]
+    D -->|article generated| J[LLM judge and score validation]
+    J --> B
+    D -->|other result| B
+    B -->|final answer| G[Completed or completed with errors]
+    C -->|budget exhausted| H[Budget exceeded]
+```
 
----
+`MissionState` retains messages, artifacts, pending actions, approval, cache, budgets, metrics and errors. Message and event reducers preserve the execution history. Pydantic validates tool inputs and structured model outputs. LangGraph controls state transitions and stores SQLite checkpoints.
 
-## Licence
+Defaults: 12 planning iterations, 20 tool calls, 40 total model attempts, 60,000 reported tokens, 32,000 input characters per model request, and two retries for transient failures. Model calls made inside tools share the same usage budget. Token enforcement occurs before the next call and can overshoot by one response; missing provider token counts are recorded explicitly. See [architecture and trade-offs](docs/architecture.md).
 
-Code source libre pour usage interne et démonstration.
+## Evaluation and development
 
----
+```bash
+ruff check atlas ui tests
+ruff format --check atlas ui tests
+pytest --cov=atlas --cov-report=json:coverage.json --junitxml=test-results.xml
+python -m atlas.evaluation.runner --repetitions 5
+python -m atlas.evaluation.baseline
+python -m atlas.evaluation.judge_run
+python scripts/summarize_validation.py
+```
 
-## Crédits
+The baseline command loads the original agent from commit `a4389d84` in local Git history. It requires a Git checkout containing that commit. All tests isolate databases and prohibit external socket connections. CI runs checks on Python 3.11 and 3.12 and uploads evaluation artifacts. Re-running measurements updates the reports; retain their environment and methodology when citing numbers.
 
-Stage May 2026 — Mohamed Yassine Aouidet.
+See [evaluation methodology and CV wording](docs/evaluation.md) for denominators, limitations, and the live evaluation still needed.
 
-Modèles utilisés : Meta Llama 3.3 (via Groq), Alibaba Qwen 2.5 (via Ollama).
+## Project layout
+
+```text
+atlas/
+  agent.py          CLI, mission history, inspect and resume
+  workflow.py       LangGraph state, routing and tool execution
+  schemas.py        Pydantic input/output/review contracts
+  harness.py        Model budgets, retries, usage and diagnostics
+  journal.py        Durable WordPress write receipts
+  judge.py          Versioned LLM-as-judge rubric and derived quality gate
+  llm.py            LangChain provider adapters and structured output
+  network.py        URL checks, redirects and response limits
+  content.py        HTML sanitation and editorial checks
+  tools/            Audit, crawl, keywords, article, sitemap, WordPress, LinkedIn
+  evaluation/       Scripted fixtures, scenarios and historical comparison
+  db.py             SQLAlchemy artifact history
+  seo_report.py     Escaped HTML reports; optional PDF export
+ui/                 Streamlit interface
+tests/              Offline unit, integration and UI smoke tests
+evaluation/results/ Raw measurements and reports
+docs/               Architecture and evaluation methodology
+```
+
+`data/` contains private local databases and is ignored by Git. Existing root-level `atlas.db` databases can be selected with `ATLAS_DB_PATH=atlas.db`; new installations use `data/atlas.db`. The introductory `hello_agent.py` and `hello_groq.py` remain provider smoke examples outside the production workflow.
+
+## Scope and limitations
+
+ATLAS is a single-user local application. Do not expose the Streamlit interface as a public multi-user service: it has no application authentication, and provider credentials are process-wide. Checkpoints contain mission text and content and should be treated as private data.
+
+HTTP collection rejects private/reserved destinations by default, validates redirects and caps responses. `ATLAS_ALLOW_PRIVATE_URLS=true` explicitly enables local development sites. These application checks do not provide network isolation or eliminate DNS rebinding; Lighthouse can also load page subresources. Use trusted sites or an isolated environment for browser audits.
+
+Prompt instructions, output schemas and HTML checks do not prove factual correctness or eliminate prompt injection. Human editorial review remains necessary. Exact-once remote publication is not guaranteed without server-side idempotency; the local journal deliberately stops on uncertain outcomes. Run one worker per mission and reconcile uncertain writes manually.
+
+Optional PDF export requires WeasyPrint and system libraries and was not exercised by the offline validation. No live model quality, real WordPress integration, field performance or SEO uplift was measured in the recorded results.

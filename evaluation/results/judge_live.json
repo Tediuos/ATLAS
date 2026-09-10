@@ -1,0 +1,7 @@
+{
+  "mode": "not_run",
+  "live_articles_scored": 0,
+  "successful_judgments": 0,
+  "reason": "Live Groq evaluation requires locally configured credentials",
+  "mean_score": null
+}

@@ -1,0 +1,4654 @@
+{
+  "schema_version": 1,
+  "mode": "offline_scripted",
+  "generated_at": "2026-09-10T12:34:43.958811+00:00",
+  "python": "3.12.4",
+  "platform": "Windows",
+  "dependencies": {
+    "langchain": "1.4.0",
+    "langgraph": "1.2.11",
+    "langgraph-checkpoint-sqlite": "3.1.1",
+    "langchain-openai": "1.6.2"
+  },
+  "source_sha256": "f1a276eb93bf57a42af613c7c412719998486ba3785f0b9c9f479d35b96bc869",
+  "repetitions": 5,
+  "distinct_scenarios": 34,
+  "runs": 170,
+  "passed": 170,
+  "categories": {
+    "approval": {
+      "passed": 25,
+      "total": 25
+    },
+    "budget": {
+      "passed": 15,
+      "total": 15
+    },
+    "cache": {
+      "passed": 5,
+      "total": 5
+    },
+    "judge": {
+      "passed": 10,
+      "total": 10
+    },
+    "linkedin": {
+      "passed": 40,
+      "total": 40
+    },
+    "resilience": {
+      "passed": 25,
+      "total": 25
+    },
+    "validation": {
+      "passed": 35,
+      "total": 35
+    },
+    "workflow": {
+      "passed": 15,
+      "total": 15
+    }
+  },
+  "latency_ms": {
+    "p50": 6.9125,
+    "p95": 21.876
+  },
+  "limitations": [
+    "Scripted planner, judge and tool responses; no live provider, WordPress, LinkedIn or Lighthouse calls.",
+    "Measures control flow and safety boundaries, not content quality, SEO uplift or model reasoning.",
+    "Repeated runs test repeatability, not additional independent examples.",
+    "Latencies exclude compilation and external services; no production speed claim."
+  ],
+  "results": [
+    {
+      "repetition": 1,
+      "name": "linkedin_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 10.067,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "linkedin_pause",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 8.213,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "linkedin_approved",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 16.667,
+      "read_calls": 1,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "linkedin_rejected",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 8.695,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "linkedin_forged_approval",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 8.5,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "linkedin_missing_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.488,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "linkedin_arbitrary_text_blocked",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.637,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "judge_rejects_article",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 9.597,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "judge_failure_blocks_write",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 8.57,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "article_to_linkedin",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 19.946,
+      "read_calls": 2,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 4,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 4,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 4,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "audit_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 5.612,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "research_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 4.948,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "article_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.933,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "full_pipeline_approved",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 23.991,
+      "read_calls": 3,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 5,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 5,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 5,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "pause_before_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 8.653,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "rejected_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 10.385,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "forged_hash",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 10.256,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "string_approval",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 10.728,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "missing_article",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.168,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "bad_article_blocked",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 8.057,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "unknown_tool",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.426,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "invalid_url",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.845,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "extra_publish_field",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.679,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "read_cache",
+      "category": "cache",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.994,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 1,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "iteration_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 4.864,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "tool_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 5.487,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "model_call_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 5.103,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "transient_tool_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 5.78,
+      "read_calls": 2,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "persistent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.37,
+      "read_calls": 3,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 2
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "permanent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.951,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "transient_model_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 4.982,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "permanent_model_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 2.838,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 0,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "empty_model_response",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.074,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 1,
+      "name": "multiple_tool_calls",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 2.728,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "linkedin_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 5.372,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "linkedin_pause",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 6.015,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "linkedin_approved",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 16.75,
+      "read_calls": 1,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "linkedin_rejected",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 8.019,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "linkedin_forged_approval",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 8.518,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "linkedin_missing_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.817,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "linkedin_arbitrary_text_blocked",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.11,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "judge_rejects_article",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 8.482,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "judge_failure_blocks_write",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 7.898,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "article_to_linkedin",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 21.876,
+      "read_calls": 2,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 4,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 4,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 4,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "audit_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 5.164,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "research_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 5.302,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "article_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 7.218,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "full_pipeline_approved",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 24.605,
+      "read_calls": 3,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 5,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 5,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 5,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "pause_before_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 8.377,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "rejected_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 10.95,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "forged_hash",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 10.56,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "string_approval",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 9.865,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "missing_article",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.533,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "bad_article_blocked",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 8.336,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "unknown_tool",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 4.122,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "invalid_url",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.178,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "extra_publish_field",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.047,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "read_cache",
+      "category": "cache",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 8.947,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 1,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "iteration_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 6.561,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "tool_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 9.042,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "model_call_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 6.124,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "transient_tool_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 7.077,
+      "read_calls": 2,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "persistent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.756,
+      "read_calls": 3,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 2
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "permanent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.373,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "transient_model_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.142,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "permanent_model_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 2.971,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 0,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "empty_model_response",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.069,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 2,
+      "name": "multiple_tool_calls",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.809,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "linkedin_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.347,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "linkedin_pause",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 7.895,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "linkedin_approved",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 21.248,
+      "read_calls": 1,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "linkedin_rejected",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 9.966,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "linkedin_forged_approval",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 9.612,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "linkedin_missing_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.273,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "linkedin_arbitrary_text_blocked",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.46,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "judge_rejects_article",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 10.868,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "judge_failure_blocks_write",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 10.128,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "article_to_linkedin",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 27.025,
+      "read_calls": 2,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 4,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 4,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 4,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "audit_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.912,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "research_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.201,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "article_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 9.2,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "full_pipeline_approved",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 30.016,
+      "read_calls": 3,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 5,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 5,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 5,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "pause_before_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 9.902,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "rejected_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 12.734,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "forged_hash",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 12.23,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "string_approval",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 12.312,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "missing_article",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.335,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "bad_article_blocked",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 9.814,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "unknown_tool",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.286,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "invalid_url",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.754,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "extra_publish_field",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.165,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "read_cache",
+      "category": "cache",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 8.785,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 1,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "iteration_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 6.168,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "tool_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 7.627,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "model_call_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 5.985,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "transient_tool_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.587,
+      "read_calls": 2,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "persistent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.638,
+      "read_calls": 3,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 2
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "permanent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.102,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "transient_model_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.503,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "permanent_model_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.384,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 0,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "empty_model_response",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.233,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 3,
+      "name": "multiple_tool_calls",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.607,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "linkedin_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.606,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "linkedin_pause",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 7.491,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "linkedin_approved",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 21.018,
+      "read_calls": 1,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "linkedin_rejected",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 10.247,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "linkedin_forged_approval",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 9.529,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "linkedin_missing_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.191,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "linkedin_arbitrary_text_blocked",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.108,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "judge_rejects_article",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 10.576,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "judge_failure_blocks_write",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 12.047,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "article_to_linkedin",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 25.87,
+      "read_calls": 2,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 4,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 4,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 4,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "audit_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 7.112,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "research_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.349,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "article_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 8.473,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "full_pipeline_approved",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 32.112,
+      "read_calls": 3,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 5,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 5,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 5,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "pause_before_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 11.846,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "rejected_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 13.002,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "forged_hash",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 13.153,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "string_approval",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 12.744,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "missing_article",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.258,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "bad_article_blocked",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 10.34,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "unknown_tool",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.175,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "invalid_url",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.346,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "extra_publish_field",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.395,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "read_cache",
+      "category": "cache",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 9.182,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 1,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "iteration_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 6.446,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "tool_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 7.361,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "model_call_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 6.567,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "transient_tool_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.973,
+      "read_calls": 2,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "persistent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.984,
+      "read_calls": 3,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 2
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "permanent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.063,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "transient_model_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.975,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "permanent_model_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.674,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 0,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "empty_model_response",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.011,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 4,
+      "name": "multiple_tool_calls",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 2.905,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "linkedin_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.322,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "linkedin_pause",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 7.952,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "linkedin_approved",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 20.892,
+      "read_calls": 1,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "linkedin_rejected",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 10.11,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "linkedin_forged_approval",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 9.37,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "linkedin_missing_draft",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.094,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "linkedin_arbitrary_text_blocked",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.668,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "judge_rejects_article",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 10.552,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "judge_failure_blocks_write",
+      "category": "judge",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 10.362,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "article_to_linkedin",
+      "category": "linkedin",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 25.179,
+      "read_calls": 2,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 4,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 4,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 4,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "audit_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.558,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "research_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 8.218,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "article_success",
+      "category": "workflow",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 9.375,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "full_pipeline_approved",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 28.525,
+      "read_calls": 3,
+      "write_calls": 1,
+      "cache_hits": 0,
+      "model_calls": 5,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 5,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 5,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "pause_before_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "awaiting_approval",
+      "expected_status": "awaiting_approval",
+      "latency_ms": 10.14,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "rejected_write",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 13.003,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "forged_hash",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 13.989,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "string_approval",
+      "category": "approval",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "rejected",
+      "expected_status": "rejected",
+      "latency_ms": 12.324,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "missing_article",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.162,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "bad_article_blocked",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 9.602,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 1,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "unknown_tool",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.235,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "invalid_url",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.841,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "extra_publish_field",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.306,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "read_cache",
+      "category": "cache",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 9.676,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 1,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 3,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "iteration_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 6.628,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "tool_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 7.72,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "model_call_budget",
+      "category": "budget",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "budget_exceeded",
+      "expected_status": "budget_exceeded",
+      "latency_ms": 6.132,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "transient_tool_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.072,
+      "read_calls": 2,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "persistent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 5.903,
+      "read_calls": 3,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 2
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "permanent_tool_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed_with_errors",
+      "expected_status": "completed_with_errors",
+      "latency_ms": 6.395,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 2,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "transient_model_recovery",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "completed",
+      "expected_status": "completed",
+      "latency_ms": 6.913,
+      "read_calls": 1,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 3,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 3,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 2,
+        "retries": 1
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "permanent_model_failure",
+      "category": "resilience",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.346,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 0,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "empty_model_response",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 3.459,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    },
+    {
+      "repetition": 5,
+      "name": "multiple_tool_calls",
+      "category": "validation",
+      "passed": true,
+      "checks": {
+        "expected_status": true,
+        "read_count": true,
+        "write_count": true,
+        "no_write_before_approval": true
+      },
+      "status": "failed",
+      "expected_status": "failed",
+      "latency_ms": 2.822,
+      "read_calls": 0,
+      "write_calls": 0,
+      "cache_hits": 0,
+      "model_calls": 1,
+      "judge_calls": 0,
+      "metrics": {
+        "model_calls": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "unreported_usage_calls": 1,
+        "retries": 0
+      }
+    }
+  ]
+}

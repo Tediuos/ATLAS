@@ -1,13 +1,14 @@
 """SQLite database models and helpers using SQLAlchemy 2.x."""
-from datetime import datetime
+
+import os
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-from sqlalchemy import Column, DateTime, Float, Integer, JSON, String, Text, create_engine, select
+from sqlalchemy import JSON, Column, DateTime, Float, Integer, String, Text, create_engine, select
 from sqlalchemy.orm import DeclarativeBase, Session
 
-
-DB_PATH = Path("atlas.db")
+DB_PATH = Path(os.getenv("ATLAS_DB_PATH", "data/atlas.db"))
 
 _engine = None
 
@@ -27,7 +28,7 @@ class Mission(Base):
     text = Column(Text, nullable=False)
     url = Column(String, nullable=False)
     status = Column(String, default="pending")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     completed_at = Column(DateTime, nullable=True)
     summary = Column(Text, nullable=True)
 
@@ -46,7 +47,7 @@ class Audit(Base):
     sitemap_data = Column(JSON, nullable=True)
     issues = Column(JSON, nullable=True)
     score = Column(Float, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class Keyword(Base):
@@ -59,7 +60,7 @@ class Keyword(Base):
     seed = Column(String, nullable=False)
     keywords = Column(JSON, nullable=True)
     clusters = Column(JSON, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class Article(Base):
@@ -75,7 +76,7 @@ class Article(Base):
     faq_json_ld = Column(Text, nullable=True)
     meta_description = Column(String, nullable=True)
     word_count = Column(Integer, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class PublishLog(Base):
@@ -90,13 +91,14 @@ class PublishLog(Base):
     wp_url = Column(String, nullable=True)
     status = Column(String, default="pending")
     error = Column(Text, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 def get_engine():
     """Return the SQLAlchemy engine, creating tables on first call."""
     global _engine
     if _engine is None:
+        DB_PATH.parent.mkdir(parents=True, exist_ok=True)
         _engine = create_engine(f"sqlite:///{DB_PATH}", echo=False)
         Base.metadata.create_all(_engine)
     return _engine

@@ -1,10 +1,13 @@
-"""Streamlit UI for the Atlas SEO + WordPress agent."""
-import io
+"""Streamlit UI for the ATLAS SEO + WordPress agent."""
+
 import os
 import sys
 from pathlib import Path
 
 import streamlit as st
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Allow imports from the project root regardless of where Streamlit is launched
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -15,13 +18,13 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # ------------------------------------------------------------------ #
 
 st.set_page_config(
-    page_title="Atlas SEO Agent",
+    page_title="ATLAS",
     page_icon="🔭",
     layout="wide",
 )
 
-st.title("🔭 Atlas — Autonomous SEO + WordPress Agent")
-st.caption("Audit · Research · Write · Publish — all in one pipeline")
+st.title("🔭 ATLAS — SEO, Content and Social Publishing")
+st.caption("Audit · Research · Write · Judge · Review · Publish")
 
 # ------------------------------------------------------------------ #
 #  Sidebar — credentials                                               #
@@ -82,6 +85,16 @@ with st.sidebar:
 #  Mission input                                                       #
 # ------------------------------------------------------------------ #
 
+with st.expander("Reopen a saved mission"):
+    saved_id = st.number_input("Mission ID", min_value=1, step=1)
+    if st.button("Load saved mission"):
+        from atlas.agent import inspect_mission
+
+        try:
+            st.session_state.result = inspect_mission(int(saved_id))
+        except ValueError as exc:
+            st.error(str(exc))
+
 st.subheader("Mission")
 mission_text = st.text_area(
     "Describe your SEO mission",
@@ -92,7 +105,7 @@ mission_text = st.text_area(
     height=120,
 )
 
-run_button = st.button("🚀 Run Atlas", type="primary", disabled=not mission_text.strip())
+run_button = st.button("🚀 Run ATLAS", type="primary", disabled=not mission_text.strip())
 
 # ------------------------------------------------------------------ #
 #  Session state                                                       #
@@ -130,19 +143,20 @@ if run_button and mission_text.strip():
         st.session_state.logs.append(f"**[{step}]** {msg}")
         log_placeholder.markdown("\n\n".join(st.session_state.logs[-20:]))
 
-    with st.spinner("Atlas is working…"):
+    with st.spinner("ATLAS is working…"):
         try:
             from atlas.agent import run_mission
 
             result = run_mission(
-                mission_text,
+                mission_text + f"\nRequested WordPress status if publishing: {publish_status}.",
                 progress_callback=_on_progress,
             )
             st.session_state.result = result
         except Exception as exc:
             st.error(f"Agent error: {exc}")
 
-    progress_placeholder.success("✅ Mission complete!")
+    if st.session_state.result:
+        progress_placeholder.info(f"Mission status: {st.session_state.result['status']}")
 
 # ------------------------------------------------------------------ #
 #  Results                                                             #
@@ -154,8 +168,54 @@ if st.session_state.result:
     st.divider()
     st.subheader(f"Mission #{result.get('mission_id')} — Results")
 
-    tab_summary, tab_audit, tab_keywords, tab_article, tab_report = st.tabs(
-        ["📋 Summary", "🔍 Audit", "🔑 Keywords", "✍️ Article", "📄 Report"]
+    st.caption(
+        f"Status: {result.get('status')} | Planning steps: {result.get('iterations', 0)} | "
+        f"Tool calls: {result.get('tool_calls', 0)}"
+    )
+    if result.get("approvals"):
+        approval = result["approvals"][0]
+        payload = approval["payload"]
+        platform = payload.get("platform", "wordpress")
+        platform_label = "LinkedIn" if platform == "linkedin" else "WordPress"
+        st.warning(f"{platform_label} post awaiting review")
+        st.write(f"Destination: {payload['destination']}")
+        if platform == "linkedin":
+            st.write(
+                f"Author: {payload['post']['author']} | Visibility: {payload['post']['visibility']}"
+            )
+            st.text(payload["post"]["commentary"])
+            with st.expander("Exact LinkedIn API payload"):
+                st.json(payload)
+        else:
+            st.write(f"Status: {payload['post']['status']}")
+            st.write(payload["post"]["title"])
+            st.code(payload["post"]["content"], language="html")
+            st.write(payload["post"]["meta_description"])
+        if approval.get("article_judgment"):
+            assessment = approval["article_judgment"]
+            st.write(f"Article judge: {assessment['overall_score']}/100 ({assessment['mode']})")
+            if assessment["scores"]["requires_fact_check"]:
+                st.warning("The judge flagged factual verification for human review.")
+        approve_col, reject_col = st.columns(2)
+        approve = approve_col.button(f"Approve this {platform_label} post", type="primary")
+        reject = reject_col.button("Reject this write")
+        if approve or reject:
+            from atlas.agent import resume_mission
+
+            with st.spinner("Resuming mission..."):
+                try:
+                    st.session_state.result = resume_mission(
+                        result["mission_id"], approve, approval["payload_hash"]
+                    )
+                    st.rerun()
+                except Exception as exc:
+                    st.error(f"Resume failed: {type(exc).__name__}")
+    with st.expander("Execution metrics"):
+        st.json(result.get("metrics", {}))
+        st.json(result.get("events", []))
+
+    tab_summary, tab_audit, tab_keywords, tab_article, tab_social, tab_report = st.tabs(
+        ["📋 Summary", "🔍 Audit", "🔑 Keywords", "✍️ Article", "LinkedIn", "📄 Report"]
     )
 
     with tab_summary:
@@ -188,33 +248,49 @@ if st.session_state.result:
 
     # ---- Keywords tab ----
     with tab_keywords:
-        # Keywords are stored in DB; try to surface them from the agent result
-        # The agent returns top_keywords in the tool result — expose via logs
-        st.info(
-            "Keyword data is persisted in the SQLite database. "
-            "See the agent logs above for cluster names and top keywords."
-        )
-        if st.session_state.logs:
-            kw_logs = [l for l in st.session_state.logs if "keyword" in l.lower()]
-            if kw_logs:
-                st.markdown("\n\n".join(kw_logs))
+        keyword_data = result.get("keywords")
+        if keyword_data and keyword_data.get("keywords"):
+            st.dataframe(keyword_data["keywords"], use_container_width=True)
+            st.caption("volume_rank is a model heuristic, not measured search volume.")
+        else:
+            st.info("No keyword research is available for this mission.")
 
     # ---- Article tab ----
     with tab_article:
         article = result.get("article")
         if article:
             st.markdown(f"**Title:** {article.get('title')}")
-            st.markdown(f"**Keyword:** `{article.get('target_keyword')}`  |  **Words:** {article.get('word_count')}")
+            st.markdown(
+                f"**Keyword:** `{article.get('target_keyword')}`  |  **Words:** {article.get('word_count')}"
+            )
             st.markdown(f"**Meta description:** {article.get('meta_description')}")
 
+            if result.get("judgment"):
+                assessment = result["judgment"]
+                st.metric("LLM judge score", f"{assessment['overall_score']}/100")
+                st.caption(
+                    f"{assessment['provider']} / {assessment['model']} | {assessment['rubric_version']} | {assessment['mode']}"
+                )
+                st.json(assessment["scores"])
+            else:
+                st.info("No valid judge assessment is available; publication is blocked.")
+
             with st.expander("Preview HTML content", expanded=True):
-                st.markdown(article.get("html_content", ""), unsafe_allow_html=True)
+                st.html(article.get("html_content", ""))
 
             if article.get("faq_json_ld"):
                 with st.expander("FAQ JSON-LD"):
                     st.code(article["faq_json_ld"], language="html")
         else:
             st.info("No article was written in this mission.")
+
+    with tab_social:
+        if result.get("linkedin_post"):
+            st.text(result["linkedin_post"]["text"])
+        else:
+            st.info("No LinkedIn draft is available for this mission.")
+        if result.get("linkedin_publish"):
+            st.json(result["linkedin_publish"])
 
     # ---- Report tab ----
     with tab_report:
@@ -229,6 +305,8 @@ if st.session_state.result:
             html_report = generate_report(
                 audit=audit_data,
                 article=article_data,
+                keywords=(result.get("keywords") or {}).get("keywords", []),
+                publish=result.get("publish"),
             )
             st.download_button(
                 label="⬇️ Download HTML Report",
@@ -238,9 +316,7 @@ if st.session_state.result:
             )
 
         st.divider()
-        st.markdown(
-            "_PDF export requires WeasyPrint (`pip install weasyprint`) and system fonts._"
-        )
+        st.markdown("_PDF export requires WeasyPrint (`pip install weasyprint`) and system fonts._")
         if st.button("Generate PDF Report"):
             try:
                 from atlas.seo_report import generate_pdf_report

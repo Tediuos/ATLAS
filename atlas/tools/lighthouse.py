@@ -1,9 +1,13 @@
 """Wrapper Python pour Lighthouse CLI - extrait les Core Web Vitals + scores."""
+
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
+
+from atlas.network import validate_url
 
 
 def run_lighthouse(url: str, mobile: bool = True, timeout: int = 120) -> dict:
@@ -20,24 +24,36 @@ def run_lighthouse(url: str, mobile: bool = True, timeout: int = 120) -> dict:
     os.close(fd)  # on ferme le file descriptor, Lighthouse écrira dedans
 
     try:
-        cmd_parts = [
-            f'lighthouse "{url}"',
-            "--output=json",
-            f'--output-path="{output_path}"',
-            '--chrome-flags="--headless --no-sandbox"',
-            "--quiet",
-            "--no-enable-error-reporting",
-        ]
+        validate_url(url)
+        executable = shutil.which("lighthouse")
+        if not executable:
+            return {"url": url, "ok": False, "error": "Lighthouse CLI is not installed"}
+        command = [executable]
+        if Path(executable).suffix.lower() in {".cmd", ".bat", ".ps1"}:
+            # Invoke the JavaScript entry point directly on Windows; never use cmd.exe.
+            entry = Path(executable).parent / "node_modules/lighthouse/cli/index.js"
+            node = shutil.which("node")
+            if not node or not entry.exists():
+                return {
+                    "url": url,
+                    "ok": False,
+                    "error": "Cannot locate Node/Lighthouse entry point",
+                }
+            command = [node, str(entry)]
+        command.extend(
+            [
+                url,
+                "--output=json",
+                f"--output-path={output_path}",
+                "--chrome-flags=--headless",
+                "--quiet",
+                "--no-enable-error-reporting",
+            ]
+        )
         if not mobile:
-            cmd_parts.append("--preset=desktop")
-        cmd = " ".join(cmd_parts)
-
+            command.append("--preset=desktop")
         result = subprocess.run(
-            cmd,
-            shell=True,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
+            command, shell=False, capture_output=True, text=True, timeout=timeout
         )
 
         if not Path(output_path).exists() or Path(output_path).stat().st_size == 0:
@@ -66,6 +82,7 @@ def run_lighthouse(url: str, mobile: bool = True, timeout: int = 120) -> dict:
 
 # ============ PARSER ============
 
+
 def _parse_lighthouse_output(data: dict, url: str, mobile: bool) -> dict:
     """Extrait uniquement les métriques utiles du JSON brut Lighthouse."""
     categories = data.get("categories", {})
@@ -91,14 +108,20 @@ def _parse_lighthouse_output(data: dict, url: str, mobile: bool) -> dict:
     opportunities = []
     for audit_id, audit in audits.items():
         details = audit.get("details") or {}
-        if details.get("type") == "opportunity" and (audit.get("score") or 1) < 1:
-            opportunities.append({
-                "id": audit_id,
-                "title": audit.get("title"),
-                "description": (audit.get("description") or "")[:200],
-                "savings_ms": details.get("overallSavingsMs", 0),
-                "score": audit.get("score"),
-            })
+        if (
+            details.get("type") == "opportunity"
+            and audit.get("score") is not None
+            and audit["score"] < 1
+        ):
+            opportunities.append(
+                {
+                    "id": audit_id,
+                    "title": audit.get("title"),
+                    "description": (audit.get("description") or "")[:200],
+                    "savings_ms": details.get("overallSavingsMs", 0),
+                    "score": audit.get("score"),
+                }
+            )
     opportunities.sort(key=lambda x: x.get("savings_ms", 0), reverse=True)
 
     # Diagnostics : autres audits qui ont échoué (sans gain de temps quantifié)
@@ -107,11 +130,13 @@ def _parse_lighthouse_output(data: dict, url: str, mobile: bool) -> dict:
     for audit_id, audit in audits.items():
         score = audit.get("score")
         if score is not None and score < 1 and audit_id not in opp_ids:
-            failed.append({
-                "id": audit_id,
-                "title": audit.get("title"),
-                "score": score,
-            })
+            failed.append(
+                {
+                    "id": audit_id,
+                    "title": audit.get("title"),
+                    "score": score,
+                }
+            )
 
     return {
         "url": url,
@@ -143,6 +168,7 @@ def _audit_value(audit):
 
 if __name__ == "__main__":
     import sys
+
     target = sys.argv[1] if len(sys.argv) > 1 else "https://example.com"
     print(f"Lighthouse audit: {target}")
     print("(comptez 30-60 secondes...)\n")

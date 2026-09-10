@@ -1,0 +1,299 @@
+{
+  "generated_at": "2026-09-10T12:34:48.396443+00:00",
+  "baseline_commit": "a4389d84c29de13201664f1cd411c14087932e34",
+  "baseline_source_sha256": "8db5b543dd3cccaff53cd553b42b9fd66f1bd186bf29a92aae39e961bbbd3f3e",
+  "mode": "offline_scripted_control_flow",
+  "probes": 7,
+  "before_passed": 1,
+  "after_passed": 7,
+  "results": [
+    {
+      "name": "audit_success",
+      "expected_status": "completed",
+      "before": {
+        "status": "completed",
+        "read_calls": 1,
+        "write_calls": 0,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true
+        },
+        "passed": true
+      },
+      "after": {
+        "name": "audit_success",
+        "category": "workflow",
+        "passed": true,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true,
+          "no_write_before_approval": true
+        },
+        "status": "completed",
+        "expected_status": "completed",
+        "latency_ms": 8.933,
+        "read_calls": 1,
+        "write_calls": 0,
+        "cache_hits": 0,
+        "model_calls": 2,
+        "judge_calls": 0,
+        "metrics": {
+          "model_calls": 2,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "unreported_usage_calls": 2,
+          "retries": 0
+        }
+      }
+    },
+    {
+      "name": "pause_before_write",
+      "expected_status": "awaiting_approval",
+      "before": {
+        "status": "raised:AssertionError",
+        "read_calls": 1,
+        "write_calls": 1,
+        "checks": {
+          "expected_status": false,
+          "read_count": true,
+          "write_count": false
+        },
+        "passed": false
+      },
+      "after": {
+        "name": "pause_before_write",
+        "category": "approval",
+        "passed": true,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true,
+          "no_write_before_approval": true
+        },
+        "status": "awaiting_approval",
+        "expected_status": "awaiting_approval",
+        "latency_ms": 9.665,
+        "read_calls": 1,
+        "write_calls": 0,
+        "cache_hits": 0,
+        "model_calls": 2,
+        "judge_calls": 1,
+        "metrics": {
+          "model_calls": 2,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "unreported_usage_calls": 2,
+          "retries": 0
+        }
+      }
+    },
+    {
+      "name": "unknown_tool",
+      "expected_status": "completed_with_errors",
+      "before": {
+        "status": "raised:KeyError",
+        "read_calls": 1,
+        "write_calls": 0,
+        "checks": {
+          "expected_status": false,
+          "read_count": false,
+          "write_count": true
+        },
+        "passed": false
+      },
+      "after": {
+        "name": "unknown_tool",
+        "category": "validation",
+        "passed": true,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true,
+          "no_write_before_approval": true
+        },
+        "status": "completed_with_errors",
+        "expected_status": "completed_with_errors",
+        "latency_ms": 5.125,
+        "read_calls": 0,
+        "write_calls": 0,
+        "cache_hits": 0,
+        "model_calls": 2,
+        "judge_calls": 0,
+        "metrics": {
+          "model_calls": 2,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "unreported_usage_calls": 2,
+          "retries": 0
+        }
+      }
+    },
+    {
+      "name": "invalid_url",
+      "expected_status": "completed_with_errors",
+      "before": {
+        "status": "completed",
+        "read_calls": 1,
+        "write_calls": 0,
+        "checks": {
+          "expected_status": false,
+          "read_count": false,
+          "write_count": true
+        },
+        "passed": false
+      },
+      "after": {
+        "name": "invalid_url",
+        "category": "validation",
+        "passed": true,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true,
+          "no_write_before_approval": true
+        },
+        "status": "completed_with_errors",
+        "expected_status": "completed_with_errors",
+        "latency_ms": 3.807,
+        "read_calls": 0,
+        "write_calls": 0,
+        "cache_hits": 0,
+        "model_calls": 2,
+        "judge_calls": 0,
+        "metrics": {
+          "model_calls": 2,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "unreported_usage_calls": 2,
+          "retries": 0
+        }
+      }
+    },
+    {
+      "name": "read_cache",
+      "expected_status": "completed",
+      "before": {
+        "status": "completed",
+        "read_calls": 2,
+        "write_calls": 0,
+        "checks": {
+          "expected_status": true,
+          "read_count": false,
+          "write_count": true
+        },
+        "passed": false
+      },
+      "after": {
+        "name": "read_cache",
+        "category": "cache",
+        "passed": true,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true,
+          "no_write_before_approval": true
+        },
+        "status": "completed",
+        "expected_status": "completed",
+        "latency_ms": 8.957,
+        "read_calls": 1,
+        "write_calls": 0,
+        "cache_hits": 1,
+        "model_calls": 3,
+        "judge_calls": 0,
+        "metrics": {
+          "model_calls": 3,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "unreported_usage_calls": 3,
+          "retries": 0
+        }
+      }
+    },
+    {
+      "name": "iteration_budget",
+      "expected_status": "budget_exceeded",
+      "before": {
+        "status": "completed",
+        "read_calls": 1,
+        "write_calls": 0,
+        "checks": {
+          "expected_status": false,
+          "read_count": true,
+          "write_count": true
+        },
+        "passed": false
+      },
+      "after": {
+        "name": "iteration_budget",
+        "category": "budget",
+        "passed": true,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true,
+          "no_write_before_approval": true
+        },
+        "status": "budget_exceeded",
+        "expected_status": "budget_exceeded",
+        "latency_ms": 5.043,
+        "read_calls": 1,
+        "write_calls": 0,
+        "cache_hits": 0,
+        "model_calls": 1,
+        "judge_calls": 0,
+        "metrics": {
+          "model_calls": 1,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "unreported_usage_calls": 1,
+          "retries": 0
+        }
+      }
+    },
+    {
+      "name": "transient_tool_recovery",
+      "expected_status": "completed",
+      "before": {
+        "status": "raised:TimeoutError",
+        "read_calls": 1,
+        "write_calls": 0,
+        "checks": {
+          "expected_status": false,
+          "read_count": false,
+          "write_count": true
+        },
+        "passed": false
+      },
+      "after": {
+        "name": "transient_tool_recovery",
+        "category": "resilience",
+        "passed": true,
+        "checks": {
+          "expected_status": true,
+          "read_count": true,
+          "write_count": true,
+          "no_write_before_approval": true
+        },
+        "status": "completed",
+        "expected_status": "completed",
+        "latency_ms": 5.063,
+        "read_calls": 2,
+        "write_calls": 0,
+        "cache_hits": 0,
+        "model_calls": 2,
+        "judge_calls": 0,
+        "metrics": {
+          "model_calls": 2,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "unreported_usage_calls": 2,
+          "retries": 1
+        }
+      }
+    }
+  ],
+  "limitations": "Seven selected regression probes, not an unbiased agent-quality benchmark. Model and external service boundaries are stubbed for both versions. Does not measure SEO performance, article quality, LLM accuracy or production latency."
+}
